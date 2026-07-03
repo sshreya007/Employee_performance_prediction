@@ -6,8 +6,11 @@ employee_data.csv. This stands in for a real HR dataset (e.g. the
 IBM HR Analytics dataset on Kaggle) so the project can run fully
 offline without any external downloads.
 
+--------------
+
 The columns and rough relationships are designed so that a machine
 learning model trained on them gives sensible, explainable results.
+
 """
 
 import numpy as np
