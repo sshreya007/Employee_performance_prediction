@@ -5,7 +5,7 @@ A simple Streamlit web app that:
   1. Takes employee details as input from the user
   2. Predicts their performance rating using a pre-trained model
   3. Shows various graphs/insights from the dataset
-
+--------
 Run with:  streamlit run app.py
 """
 
