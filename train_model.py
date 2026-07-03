@@ -6,6 +6,8 @@ PerformanceRating (1-4), evaluates it, and saves:
   - model.pkl          : the trained model
   - label_encoders.pkl : encoders for categorical columns
   - feature_columns.pkl: the exact column order the model expects
+
+  -------------
 """
 
 import joblib
