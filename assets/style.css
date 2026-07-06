@@ -1,0 +1,155 @@
+/* ═══════════════════════════════════════════════════════════
+   PerformaAI — Global Design Tokens & Base Styles
+   All colors, fonts, and animations defined here.
+   The actual component styles live in components/design_system.py
+═══════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap');
+
+/* ── Color tokens ── */
+:root {
+  /* Backgrounds */
+  --bg-base:    #090014;
+  --bg-surface: #0D001F;
+  --bg-raised:  #12002B;
+  --bg-overlay: #1A063A;
+
+  /* Primary palette */
+  --purple:     #7C3AED;
+  --violet:     #8B5CF6;
+  --blue:       #4F8CFF;
+  --cyan:       #22D3EE;
+
+  /* Accent */
+  --pink:       #EC4899;
+  --orange:     #F59E0B;
+  --green:      #10B981;
+  --red:        #EF4444;
+
+  /* Text */
+  --text-primary:   #F1F5F9;
+  --text-secondary: #94A3B8;
+  --text-muted:     #475569;
+  --text-subtle:    #334155;
+  --text-purple:    #C4B5FD;
+
+  /* Borders */
+  --border-dim:    rgba(124, 58, 237, 0.15);
+  --border-normal: rgba(124, 58, 237, 0.25);
+  --border-bright: rgba(124, 58, 237, 0.55);
+
+  /* Shadows */
+  --shadow-sm:  0 4px 16px rgba(124, 58, 237, 0.12);
+  --shadow-md:  0 12px 40px rgba(124, 58, 237, 0.18);
+  --shadow-lg:  0 24px 64px rgba(124, 58, 237, 0.25);
+  --shadow-glow: 0 0 40px rgba(124, 58, 237, 0.5);
+
+  /* Performance rating colors */
+  --rating-1: #EF4444;   /* Low        */
+  --rating-2: #F59E0B;   /* Good       */
+  --rating-3: #10B981;   /* Excellent  */
+  --rating-4: #8B5CF6;   /* Outstanding*/
+
+  /* Radius */
+  --radius-sm:  8px;
+  --radius-md:  12px;
+  --radius-lg:  18px;
+  --radius-xl:  24px;
+  --radius-full: 9999px;
+
+  /* Transitions */
+  --transition-fast:   all 0.15s ease;
+  --transition-normal: all 0.25s ease;
+  --transition-slow:   all 0.4s ease;
+}
+
+/* ── Base reset ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-base);
+  font-family: 'Inter', sans-serif;
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Typography ── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text-primary);
+}
+
+a {
+  color: var(--violet);
+  text-decoration: none;
+  transition: var(--transition-fast);
+}
+a:hover { color: var(--cyan); }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar       { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-surface); }
+::-webkit-scrollbar-thumb { background: var(--purple); border-radius: var(--radius-full); }
+::-webkit-scrollbar-thumb:hover { background: var(--violet); }
+
+/* ── Animations ── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-10px); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(124, 58, 237, 0.4); }
+  50%       { box-shadow: 0 0 50px rgba(124, 58, 237, 0.8), 0 0 80px rgba(79, 140, 255, 0.2); }
+}
+
+@keyframes gradient-shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ── Utility classes ── */
+.grad-text {
+  background: linear-gradient(135deg, #8B5CF6, #22D3EE);
+  background-size: 200% 200%;
+  animation: gradient-shift 4s ease infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-normal);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(20px);
+}
+
+.glow {
+  box-shadow: var(--shadow-glow);
+  animation: glow-pulse 2.5s infinite;
+}
