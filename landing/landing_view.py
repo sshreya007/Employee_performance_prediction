@@ -1,6 +1,4 @@
 import streamlit as st
-from components.navbar import render_public_navbar
-from components.footer import render_footer
 from utils.session import set_page
 
 GLOBAL_CSS = """
@@ -23,6 +21,28 @@ body,.stApp { background:#090014 !important; font-family:'Inter',sans-serif; col
 
 LANDING_HTML = """
 <style>
+/* NAV */
+.lp-nav {
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 48px;
+  background:rgba(9,0,20,.7);backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(124,58,237,.2);
+}
+.lp-logo {
+  font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:800;
+  background:linear-gradient(135deg,#8B5CF6,#22D3EE);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.lp-links { display:flex;gap:28px;list-style:none; }
+.lp-links a { color:#94A3B8;font-size:14px;font-weight:500;text-decoration:none;transition:color .2s; }
+.lp-links a:hover { color:#fff; }
+.lp-nav-btns { display:flex;gap:12px; }
+.btn-ghost { background:transparent;border:1px solid rgba(139,92,246,.5);color:#8B5CF6;padding:9px 20px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-block; }
+.btn-ghost:hover { background:rgba(139,92,246,.1);border-color:#8B5CF6; }
+.btn-primary-nav { background:linear-gradient(135deg,#7C3AED,#4F8CFF);border:none;color:#fff;padding:9px 20px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:all .3s;text-decoration:none;display:inline-block;animation:glow-pulse 2.5s infinite; }
+.btn-primary-nav:hover { transform:translateY(-2px);filter:brightness(1.15); }
+
 /* HERO */
 .hero {
   min-height:100vh;
@@ -37,23 +57,10 @@ LANDING_HTML = """
 .b1 { width:500px;height:500px;top:-100px;left:-100px;background:radial-gradient(circle,rgba(124,58,237,.3),transparent 70%);animation:float 8s ease-in-out infinite; }
 .b2 { width:400px;height:400px;bottom:-50px;right:-80px;background:radial-gradient(circle,rgba(79,140,255,.25),transparent 70%);animation:float2 10s ease-in-out infinite; }
 .b3 { width:300px;height:300px;top:40%;left:60%;background:radial-gradient(circle,rgba(34,211,238,.15),transparent 70%);animation:float 12s ease-in-out infinite reverse; }
-.hero-badge {
-  display:inline-flex;align-items:center;gap:8px;
-  background:rgba(124,58,237,.15);border:1px solid rgba(124,58,237,.4);
-  border-radius:50px;padding:6px 18px;margin-bottom:28px;
-  font-size:12px;font-weight:600;color:#C4B5FD;animation:fadeInUp .8s ease both;
-}
+.hero-badge { display:inline-flex;align-items:center;gap:8px;background:rgba(124,58,237,.15);border:1px solid rgba(124,58,237,.4);border-radius:50px;padding:6px 18px;margin-bottom:28px;font-size:12px;font-weight:600;color:#C4B5FD;animation:fadeInUp .8s ease both; }
 .badge-dot { width:6px;height:6px;background:#22D3EE;border-radius:50%;animation:glow-pulse 1.5s infinite; }
-.hero-title {
-  font-family:'Space Grotesk',sans-serif;
-  font-size:clamp(40px,7vw,88px);font-weight:800;line-height:1.05;
-  letter-spacing:-2px;margin-bottom:24px;animation:fadeInUp .8s .1s ease both;
-}
-.hero-title .grad {
-  background:linear-gradient(135deg,#8B5CF6 0%,#4F8CFF 40%,#22D3EE 80%);
-  background-size:200% 200%;animation:gradient-shift 4s ease infinite;
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-}
+.hero-title { font-family:'Space Grotesk',sans-serif;font-size:clamp(40px,7vw,88px);font-weight:800;line-height:1.05;letter-spacing:-2px;margin-bottom:24px;animation:fadeInUp .8s .1s ease both; }
+.hero-title .grad { background:linear-gradient(135deg,#8B5CF6 0%,#4F8CFF 40%,#22D3EE 80%);background-size:200% 200%;animation:gradient-shift 4s ease infinite;-webkit-background-clip:text;-webkit-text-fill-color:transparent; }
 .hero-sub { font-size:18px;color:#94A3B8;max-width:560px;margin:0 auto 40px;line-height:1.7;animation:fadeInUp .8s .2s ease both; }
 .hero-btns { display:flex;gap:16px;justify-content:center;flex-wrap:wrap;animation:fadeInUp .8s .3s ease both; }
 .btn-hp { background:linear-gradient(135deg,#7C3AED,#4F8CFF);color:#fff;padding:15px 38px;border-radius:12px;border:none;font-size:15px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;transition:all .3s;box-shadow:0 0 30px rgba(124,58,237,.5); }
@@ -150,6 +157,20 @@ LANDING_HTML = """
 .f-social:hover { background:rgba(124,58,237,.28);transform:translateY(-2px); }
 .footer-bottom { border-top:1px solid rgba(124,58,237,.08);padding-top:22px;display:flex;justify-content:space-between;align-items:center;color:#334155;font-size:12px;flex-wrap:wrap;gap:10px; }
 </style>
+
+<!-- NAV -->
+<nav class="lp-nav">
+  <div class="lp-logo">PerformaAI</div>
+  <ul class="lp-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+  <div class="lp-nav-btns">
+    <a href="?page=login"  class="btn-ghost">Login</a>
+    <a href="?page=signup" class="btn-primary-nav">Sign Up</a>
+  </div>
+</nav>
 
 <!-- HERO -->
 <section class="hero">
@@ -268,15 +289,18 @@ LANDING_HTML = """
 </footer>
 """
 
-AUTH_CARD_CSS = """
-<style>
-.auth-wrap { display:flex;justify-content:center;margin-top:60px;padding:0 20px 40px; }
-.auth-card { background:rgba(255,255,255,.04);border:1px solid rgba(124,58,237,.3);border-radius:24px;padding:44px 40px;width:100%;max-width:420px;backdrop-filter:blur(30px);box-shadow:0 0 80px rgba(124,58,237,.12),0 40px 80px rgba(0,0,0,.5);animation:fadeInUp .6s ease both; }
-</style>
-"""
-
 
 def show():
     st.markdown(GLOBAL_CSS, unsafe_allow_html=True)
-    render_public_navbar()
     st.markdown(LANDING_HTML, unsafe_allow_html=True)
+
+    # Streamlit Login/Signup buttons (backup for HTML nav clicks)
+    col1, col2, col3 = st.columns([6, 1, 1])
+    with col2:
+        if st.button("Login", key="lp_login"):
+            set_page("login")
+            st.rerun()
+    with col3:
+        if st.button("Sign Up", key="lp_signup", type="primary"):
+            set_page("signup")
+            st.rerun()

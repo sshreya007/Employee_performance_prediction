@@ -69,7 +69,7 @@ def show():
     at_risk      = (df["PerformanceRating"] == 1).sum()
 
     # ── Page open ─────────────────────────────────────────────
-    st.markdown('<div class="page-wrap">', unsafe_allow_html=True)
+    st.markdown('<div class="page-wrap" style="padding-top:16px;">', unsafe_allow_html=True)
 
     # ── Header ────────────────────────────────────────────────
     st.markdown(f"""
