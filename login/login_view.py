@@ -2,84 +2,144 @@ import streamlit as st
 from auth.users import authenticate
 from auth.auth import login_user
 from utils.session import set_page
-
-CSS = """
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@700&display=swap');
-body,.stApp{background:#090014 !important;font-family:'Inter',sans-serif;color:#fff;}
-#MainMenu,footer,header,.stDeployButton{display:none !important;}
-.block-container{padding:0 !important;max-width:100% !important;}
-[data-testid="stVerticalBlock"]{gap:0 !important;}
-@keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-.auth-page{min-height:100vh;background:radial-gradient(ellipse 80% 60% at 30% 50%,rgba(124,58,237,.2),transparent 60%),radial-gradient(ellipse 60% 50% at 80% 60%,rgba(79,140,255,.12),transparent 60%),linear-gradient(135deg,#090014,#12002B,#1A063A);display:flex;align-items:center;justify-content:center;padding:60px 20px;}
-.auth-card{background:rgba(255,255,255,.04);border:1px solid rgba(124,58,237,.3);border-radius:26px;padding:48px 42px;width:100%;max-width:430px;backdrop-filter:blur(30px);box-shadow:0 0 80px rgba(124,58,237,.12),0 40px 80px rgba(0,0,0,.5);animation:fadeInUp .6s ease both;}
-.auth-logo{text-align:center;margin-bottom:6px;font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;background:linear-gradient(135deg,#8B5CF6,#22D3EE);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.auth-tagline{text-align:center;color:#475569;font-size:12px;margin-bottom:32px;}
-.auth-title{font-size:22px;font-weight:700;margin-bottom:4px;}
-.auth-sub{color:#64748B;font-size:13px;margin-bottom:24px;}
-.divider{display:flex;align-items:center;gap:10px;margin:16px 0;}
-.div-line{flex:1;height:1px;background:rgba(124,58,237,.2);}
-.div-text{font-size:11px;color:#334155;font-weight:500;}
-.social-row{display:flex;gap:10px;margin-bottom:24px;}
-.btn-social{flex:1;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:10px;font-size:13px;color:#94A3B8;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;}
-.btn-social:hover{background:rgba(255,255,255,.08);color:#fff;}
-.auth-footer{text-align:center;font-size:13px;color:#475569;margin-top:4px;}
-</style>
-"""
+from components.design_system import inject_css
 
 
 def show():
-    st.markdown(CSS, unsafe_allow_html=True)
-    st.markdown('<div class="auth-page"><div class="auth-card">', unsafe_allow_html=True)
+    inject_css()
 
-    st.markdown('<div class="auth-logo">PerformaAI</div>', unsafe_allow_html=True)
-    st.markdown('<div class="auth-tagline">HR Intelligence Platform</div>', unsafe_allow_html=True)
-
-    col_back, _ = st.columns([1, 3])
-    with col_back:
-        if st.button("← Home", key="login_home"):
-            set_page("landing"); st.rerun()
-
-    st.markdown('<div class="auth-title">Welcome back 👋</div>', unsafe_allow_html=True)
-    st.markdown('<div class="auth-sub">Sign in to your HR dashboard</div>', unsafe_allow_html=True)
-
-    username = st.text_input("Username", placeholder="Enter your username", key="li_user")
-    password = st.text_input("Password", type="password", placeholder="Enter your password", key="li_pass")
-
-    col1, col2 = st.columns(2)
-    with col1:
-        st.checkbox("Remember me", key="li_remember")
-    with col2:
-        st.markdown('<div style="text-align:right;padding-top:4px;"><a style="color:#8B5CF6;font-size:13px;text-decoration:none;font-weight:500;" href="#">Forgot password?</a></div>', unsafe_allow_html=True)
-
-    st.markdown("<br>", unsafe_allow_html=True)
-
-    if st.button("🔐 Login", key="login_btn", use_container_width=True, type="primary"):
-        if not username or not password:
-            st.error("Please fill in all fields.")
-        else:
-            user = authenticate(username, password)
-            if user:
-                login_user(user)
-                st.session_state["app_page"] = "home"
-                set_page("dashboard")
-                st.rerun()
-            else:
-                st.error("❌ Invalid username or password.")
-
+    # Extra auth-page specific overrides
     st.markdown("""
-    <div class="divider"><div class="div-line"></div><div class="div-text">OR CONTINUE WITH</div><div class="div-line"></div></div>
-    <div class="social-row">
-      <button class="btn-social">🔵 Google</button>
-      <button class="btn-social">⚫ GitHub</button>
-    </div>
+    <style>
+    /* Full page dark background */
+    .stApp {
+      background: radial-gradient(ellipse 80% 60% at 30% 50%, rgba(124,58,237,0.18), transparent 60%),
+                  radial-gradient(ellipse 50% 50% at 80% 60%, rgba(79,140,255,0.1), transparent 60%),
+                  #090014 !important;
+    }
+    /* Card column — glass effect via container styling */
+    [data-testid="stVerticalBlock"] > [data-testid="stVerticalBlock"] {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(124,58,237,0.28);
+      border-radius: 20px;
+      padding: 36px 32px !important;
+      backdrop-filter: blur(30px);
+      box-shadow: 0 0 60px rgba(124,58,237,0.1), 0 32px 64px rgba(0,0,0,0.4);
+      animation: fadeInUp 0.5s ease both;
+    }
+    </style>
     """, unsafe_allow_html=True)
 
-    col_a, col_b = st.columns([2, 1])
-    with col_a:
-        st.markdown('<div class="auth-footer">Don\'t have an account?</div>', unsafe_allow_html=True)
-    with col_b:
-        if st.button("Sign Up →", key="to_signup"):
-            set_page("signup"); st.rerun()
+    # Centre the card using columns
+    _, col, _ = st.columns([1, 1.2, 1])
 
-    st.markdown('</div></div>', unsafe_allow_html=True)
+    with col:
+        # ── Logo ──────────────────────────────────────────────
+        st.markdown("""
+        <div style="text-align:center; margin-bottom:6px;">
+          <span style="font-family:'Space Grotesk',sans-serif; font-size:26px; font-weight:800;
+            background:linear-gradient(135deg,#8B5CF6,#22D3EE);
+            -webkit-background-clip:text; -webkit-text-fill-color:transparent;">
+            PerformaAI
+          </span>
+        </div>
+        <div style="text-align:center; color:#334155; font-size:12px;
+             letter-spacing:2px; text-transform:uppercase; margin-bottom:28px;">
+          HR Intelligence Platform
+        </div>
+        """, unsafe_allow_html=True)
+
+        # ── Heading ───────────────────────────────────────────
+        st.markdown("""
+        <div style="margin-bottom:20px;">
+          <div style="font-family:'Space Grotesk',sans-serif; font-size:22px;
+               font-weight:800; color:#F1F5F9; margin-bottom:4px;">
+            Welcome back 👋
+          </div>
+          <div style="font-size:13px; color:#475569;">
+            Sign in to your HR dashboard
+          </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        # ── Form ──────────────────────────────────────────────
+        username = st.text_input("Username", placeholder="Enter your username", key="li_user")
+        password = st.text_input("Password", type="password", placeholder="Enter your password", key="li_pass")
+
+        col1, col2 = st.columns(2)
+        with col1:
+            st.checkbox("Remember me", key="li_remember")
+        with col2:
+            st.markdown("""
+            <div style="text-align:right; padding-top:6px;">
+              <span style="color:#8B5CF6; font-size:13px; font-weight:500; cursor:pointer;">
+                Forgot password?
+              </span>
+            </div>
+            """, unsafe_allow_html=True)
+
+        st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
+
+        if st.button("Sign in", key="login_btn", use_container_width=True, type="primary"):
+            if not username or not password:
+                st.error("Please fill in all fields.")
+            else:
+                user = authenticate(username, password)
+                if user:
+                    login_user(user)
+                    st.session_state["app_page"] = "home"
+                    set_page("dashboard")
+                    st.rerun()
+                else:
+                    st.error("Invalid username or password.")
+
+        # ── Divider ───────────────────────────────────────────
+        st.markdown("""
+        <div style="display:flex; align-items:center; gap:12px; margin:16px 0;">
+          <div style="flex:1; height:1px; background:rgba(124,58,237,0.2);"></div>
+          <span style="font-size:11px; color:#334155; font-weight:500; white-space:nowrap;">
+            OR CONTINUE WITH
+          </span>
+          <div style="flex:1; height:1px; background:rgba(124,58,237,0.2);"></div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        # ── Social buttons ────────────────────────────────────
+        sc1, sc2 = st.columns(2)
+        with sc1:
+            st.button("🔵  Google", key="google_login", use_container_width=True)
+        with sc2:
+            st.button("⚫  GitHub", key="github_login", use_container_width=True)
+
+        # ── Switch to signup ──────────────────────────────────
+        st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
+        ca, cb = st.columns([3, 2])
+        with ca:
+            st.markdown("""
+            <div style="font-size:13px; color:#475569; padding-top:10px;">
+              Don't have an account?
+            </div>
+            """, unsafe_allow_html=True)
+        with cb:
+            if st.button("Create account →", key="to_signup", use_container_width=True):
+                set_page("signup")
+                st.rerun()
+
+        # ── Back to landing ───────────────────────────────────
+        st.markdown("<div style='height:4px'></div>", unsafe_allow_html=True)
+        if st.button("← Back to home", key="login_home"):
+            set_page("landing")
+            st.rerun()
+
+        # ── Demo hint ─────────────────────────────────────────
+        st.markdown("""
+        <div style="margin-top:16px; padding:12px 16px;
+             background:rgba(124,58,237,0.08); border:1px solid rgba(124,58,237,0.2);
+             border-radius:10px; font-size:12px; color:#64748B; text-align:center;">
+          Demo: <code style="color:#C4B5FD;">admin</code> /
+          <code style="color:#C4B5FD;">admin123</code>
+          &nbsp;·&nbsp;
+          <code style="color:#C4B5FD;">hrmanager</code> /
+          <code style="color:#C4B5FD;">hr1234</code>
+        </div>
+        """, unsafe_allow_html=True)
