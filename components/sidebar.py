@@ -1,32 +1,32 @@
 import streamlit as st
 from auth.auth import logout
 
-
-NAV_ITEMS = [
-    ("🏠", "Home",        "home"),
-    ("🔮", "Prediction",  "prediction"),
-    ("📋", "History",     "history"),
-    ("👤", "Profile",     "profile"),
+NAV = [
+    ("🏠", "Home",       "home"),
+    ("🔮", "Prediction", "prediction"),
+    ("📋", "History",    "history"),
+    ("👤", "Profile",    "profile"),
 ]
 
 
 def render_sidebar():
     with st.sidebar:
-        # ── Logo ─────────────────────────────────────────────
+        # ── Logo ──────────────────────────────────────────────
         st.markdown("""
-        <div style="padding:28px 20px 16px; text-align:center;">
-          <div style="
-            font-family:'Space Grotesk',sans-serif;
-            font-size:22px; font-weight:800;
-            background:linear-gradient(135deg,#8B5CF6,#22D3EE);
-            -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-            margin-bottom:4px;
-          ">PerformaAI</div>
-          <div style="font-size:10px;color:#334155;letter-spacing:2px;text-transform:uppercase;font-weight:600;">
+        <div style="padding:28px 20px 12px; text-align:center;">
+          <div style="font-family:'Space Grotesk',sans-serif; font-size:21px; font-weight:800;
+               background:linear-gradient(135deg,#8B5CF6,#22D3EE);
+               -webkit-background-clip:text; -webkit-text-fill-color:transparent;">
+            PerformaAI
+          </div>
+          <div style="font-size:9px; color:#1E293B; letter-spacing:3px;
+               text-transform:uppercase; font-weight:700; margin-top:2px;">
             HR Intelligence
           </div>
         </div>
         """, unsafe_allow_html=True)
+
+        st.divider()
 
         # ── User card ─────────────────────────────────────────
         name    = st.session_state.get("name", "User")
@@ -35,36 +35,32 @@ def render_sidebar():
         role_color = "#7C3AED" if role == "admin" else "#22D3EE"
 
         st.markdown(f"""
-        <div style="
-          margin: 0 12px 20px;
-          background: linear-gradient(135deg,rgba(124,58,237,.15),rgba(34,211,238,.08));
-          border:1px solid rgba(124,58,237,.3);
-          border-radius:16px; padding:16px; text-align:center;
-        ">
-          <div style="
-            width:48px;height:48px;border-radius:50%;margin:0 auto 10px;
-            background:linear-gradient(135deg,#7C3AED,#22D3EE);
-            display:flex;align-items:center;justify-content:center;
-            font-size:20px;font-weight:800;color:#fff;
-            box-shadow:0 0 20px rgba(124,58,237,.4);
-          ">{initial}</div>
-          <div style="font-weight:700;font-size:14px;color:#E2E8F0;">{name}</div>
-          <div style="
-            margin-top:6px;
-            display:inline-block;
-            background:rgba(124,58,237,.15);
-            border:1px solid {role_color};
-            color:{role_color};
-            font-size:10px;font-weight:700;padding:2px 10px;
-            border-radius:50px;text-transform:uppercase;letter-spacing:1px;
-          ">{role}</div>
+        <div style="margin:0 12px 16px; padding:16px;
+             background:linear-gradient(135deg,rgba(124,58,237,0.12),rgba(34,211,238,0.06));
+             border:1px solid rgba(124,58,237,0.25); border-radius:14px; text-align:center;">
+          <div style="width:44px; height:44px; border-radius:50%; margin:0 auto 10px;
+               background:linear-gradient(135deg,#7C3AED,#22D3EE);
+               display:flex; align-items:center; justify-content:center;
+               font-size:18px; font-weight:800; color:#fff;
+               box-shadow:0 0 18px rgba(124,58,237,0.4);">
+            {initial}
+          </div>
+          <div style="font-weight:700; font-size:14px; color:#E2E8F0; margin-bottom:6px;">
+            {name}
+          </div>
+          <span style="font-size:10px; font-weight:700; text-transform:uppercase;
+               letter-spacing:1.2px; padding:3px 10px; border-radius:50px;
+               border:1px solid {role_color}; color:{role_color};
+               background:rgba(124,58,237,0.08);">
+            {role}
+          </span>
         </div>
         """, unsafe_allow_html=True)
 
         # ── Nav label ─────────────────────────────────────────
         st.markdown("""
-        <div style="padding:0 20px 8px;font-size:10px;color:#334155;
-             font-weight:700;letter-spacing:2px;text-transform:uppercase;">
+        <div style="padding:0 18px 6px; font-size:10px; color:#1E293B;
+             font-weight:700; letter-spacing:2px; text-transform:uppercase;">
           Navigation
         </div>
         """, unsafe_allow_html=True)
@@ -72,22 +68,18 @@ def render_sidebar():
         # ── Nav items ─────────────────────────────────────────
         current = st.session_state.get("app_page", "home")
 
-        for icon, label, key in NAV_ITEMS:
-            active = current == key
-            if active:
+        for icon, label, key in NAV:
+            if current == key:
+                # Active item — styled inline since CSS can't target nth button
                 st.markdown(f"""
-                <div style="
-                  margin:0 12px 4px;
-                  background:linear-gradient(135deg,rgba(124,58,237,.3),rgba(79,140,255,.15));
-                  border:1px solid rgba(124,58,237,.5);
-                  border-radius:10px; padding:11px 16px;
-                  display:flex;align-items:center;gap:10px;
-                  color:#C4B5FD;font-size:14px;font-weight:700;
-                  cursor:default;
-                ">
-                  <span style="font-size:16px;">{icon}</span> {label}
-                  <span style="margin-left:auto;width:6px;height:6px;border-radius:50%;
-                        background:#8B5CF6;box-shadow:0 0 8px #8B5CF6;"></span>
+                <div style="margin:2px 10px; padding:11px 16px; border-radius:10px;
+                     background:linear-gradient(135deg,rgba(124,58,237,0.28),rgba(79,140,255,0.12));
+                     border:1px solid rgba(124,58,237,0.4);
+                     display:flex; align-items:center; gap:10px;
+                     color:#C4B5FD; font-size:14px; font-weight:700; cursor:default;">
+                  <span>{icon}</span> {label}
+                  <span style="margin-left:auto; width:6px; height:6px; border-radius:50%;
+                        background:#8B5CF6; box-shadow:0 0 8px #8B5CF6;"></span>
                 </div>
                 """, unsafe_allow_html=True)
             else:
@@ -95,21 +87,16 @@ def render_sidebar():
                     st.session_state["app_page"] = key
                     st.rerun()
 
-        # ── Divider ───────────────────────────────────────────
-        st.markdown("""
-        <div style="margin:16px 20px;height:1px;
-             background:linear-gradient(90deg,transparent,rgba(124,58,237,.4),transparent);">
-        </div>
-        """, unsafe_allow_html=True)
+        st.divider()
 
         # ── Logout ────────────────────────────────────────────
         if st.button("🚪  Logout", key="sidebar_logout", use_container_width=True):
             logout()
 
-        # ── Bottom branding ───────────────────────────────────
+        # ── Version ───────────────────────────────────────────
         st.markdown("""
-        <div style="position:absolute;bottom:20px;left:0;right:0;
-             text-align:center;font-size:10px;color:#1E293B;padding:0 20px;">
+        <div style="position:absolute; bottom:16px; left:0; right:0;
+             text-align:center; font-size:10px; color:#1E293B;">
           PerformaAI v1.0 · Final Year Project
         </div>
         """, unsafe_allow_html=True)
