@@ -33,9 +33,7 @@ elif page == "prediction":
     from prediction.prediction_view import show; show()
 
 elif page == "history":
-    from components.design_system import inject_css
-    inject_css()
-    st.markdown('<div style="padding:28px 36px;"><div style="font-family:Space Grotesk,sans-serif;font-size:28px;font-weight:800;color:#F1F5F9;">📋 History — Coming Soon</div></div>', unsafe_allow_html=True)
+    from history.history_view import show; show()
 
 elif page == "profile":
     from components.design_system import inject_css
