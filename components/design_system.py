@@ -64,7 +64,7 @@ section[data-testid="stSidebar"] .stButton > button:hover {
   background: rgba(255,255,255,0.04) !important;
   border: 1px solid rgba(124,58,237,0.28) !important;
   border-radius: 10px !important;
-  color: #F1F5F9 !important;
+  color: #0F0F0F !important;
   font-size: 14px !important;
   transition: border-color 0.2s, box-shadow 0.2s !important;
 }
